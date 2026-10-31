@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>ᚺᚢᛁ · ᚨᚾ</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; overflow:hidden; }
+  body {
+    background: radial-gradient(circle at 50% 28%, #1b4265 0%, #0a1d2e 42%, #040c14 72%, #01060b 100%);
+    font-family: "Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", serif;
+    color: #d9ecf8;
+    position: relative;
+  }
+
+  /* 月亮 */
+  .moon {
+    position:absolute; left:50%; top:26%; width:260px; height:260px;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    background: radial-gradient(circle at 42% 38%, #ffffff 0%, #f2fbff 22%, #cbe6f6 42%, rgba(150,200,228,.35) 58%, rgba(150,200,228,0) 74%);
+    filter: blur(1.5px);
+    opacity:.8;
+    box-shadow: 0 0 180px 70px rgba(150,205,235,.16);
+  }
+
+  /* 月晕放射 */
+  .rays {
+    position:absolute; left:50%; top:26%; width:1500px; height:1500px;
+    transform:translate(-50%,-50%);
+    background: conic-gradient(from 0deg,
+      rgba(170,220,245,0) 0deg,  rgba(170,220,245,.07) 5deg,  rgba(170,220,245,0) 13deg,
+      rgba(170,220,245,0) 38deg, rgba(170,220,245,.05) 45deg, rgba(170,220,245,0) 54deg,
+      rgba(170,220,245,0) 86deg, rgba(170,220,245,.06) 93deg, rgba(170,220,245,0) 102deg,
+      rgba(170,220,245,0) 138deg,rgba(170,220,245,.05) 146deg,rgba(170,220,245,0) 155deg,
+      rgba(170,220,245,0) 194deg,rgba(170,220,245,.06) 201deg,rgba(170,220,245,0) 210deg,
+      rgba(170,220,245,0) 248deg,rgba(170,220,245,.05) 256deg,rgba(170,220,245,0) 265deg,
+      rgba(170,220,245,0) 298deg,rgba(170,220,245,.06) 306deg,rgba(170,220,245,0) 315deg,
+      rgba(170,220,245,0) 360deg);
+    -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,.9) 6%, rgba(0,0,0,.42) 26%, rgba(0,0,0,0) 54%);
+    mask-image: radial-gradient(circle, rgba(0,0,0,.9) 6%, rgba(0,0,0,.42) 26%, rgba(0,0,0,0) 54%);
+    animation: turn 220s linear infinite;
+    opacity:.5; pointer-events:none;
+  }
+  @keyframes turn { to { transform: translate(-50%,-50%) rotate(360deg) } }
+
+  /* 星点 */
+  .stars { position:absolute; inset:0; pointer-events:none; }
+  .s {
+    position:absolute; border-radius:50%; background:#eaf7ff;
+    animation: twinkle ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%,100% { opacity:.12; transform:scale(.8) }
+    50%     { opacity:.55; transform:scale(1.15) }
+  }
+
+  /* 月亮在水里的碎影 */
+  .shimmer {
+    position:absolute; left:50%; bottom:0; width:min(52vw, 620px); height:26%;
+    transform:translateX(-50%);
+    background:
+      repeating-linear-gradient(to bottom,
+        rgba(200,235,250,.10) 0 2px, rgba(200,235,250,0) 2px 9px),
+      radial-gradient(ellipse 55% 100% at 50% 100%, rgba(170,220,245,.16), rgba(170,220,245,0) 70%);
+    -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,.9), rgba(0,0,0,0));
+    mask-image: linear-gradient(to top, rgba(0,0,0,.9), rgba(0,0,0,0));
+    animation: shimmer 7s ease-in-out infinite;
+    opacity:.6;
+  }
+  @keyframes shimmer {
+    0%,100% { transform:translateX(-50%) scaleY(1); opacity:.5 }
+    50%     { transform:translateX(-50%) scaleY(1.12); opacity:.72 }
+  }
+
+  /* 水面反光 */
+  .glow {
+    position:absolute; left:50%; bottom:-18%; width:140%; height:52%;
+    transform:translateX(-50%);
+    background: radial-gradient(ellipse 75% 100% at 50% 100%, rgba(150,205,235,.22) 0%, rgba(150,205,235,.07) 40%, rgba(150,205,235,0) 72%);
+  }
+
+  /* 气泡 */
+  .bubbles { position:absolute; inset:0; pointer-events:none; }
+  .b {
+    position:absolute; bottom:-40px; border-radius:50%;
+    border:1px solid rgba(190,226,245,.35);
+    background: radial-gradient(circle at 32% 30%, rgba(230,246,255,.55), rgba(160,205,230,.06) 60%);
+    animation: rise linear infinite;
+  }
+  @keyframes rise {
+    0%   { transform: translateY(0) translateX(0) scale(.7); opacity:0; }
+    12%  { opacity:.75; }
+    100% { transform: translateY(-115vh) translateX(28px) scale(1.05); opacity:0; }
+  }
+
+  /* 鲸 */
+  .sea { position:absolute; left:0; right:0; top:52%; height:0; }
+  .whale-wrap {
+    position:absolute; top:-70px; left:-260px;
+    animation: swim 52s linear infinite;
+    animation-delay: -20s;
+  }
+  @keyframes swim {
+    0%   { transform: translateX(calc(100vw + 560px)) }
+    100% { transform: translateX(0) }
+  }
+  .whale { animation: bob 5.5s ease-in-out infinite; }
+  .whale-wrap.small { top: 46px; animation-duration: 68s; animation-delay: -36s; opacity:.62; }
+  @keyframes bob {
+    0%,100% { transform: translateY(0) rotate(-2deg); }
+    50%     { transform: translateY(-14px) rotate(2deg); }
+  }
+  .fluke { animation: flap 3.2s ease-in-out infinite; transform-origin: 62px 4px; }
+  @keyframes flap {
+    0%,100% { transform: rotate(-9deg) }
+    50%     { transform: rotate(9deg) }
+  }
+
+  /* 字 */
+  .words {
+    position:absolute; left:50%; bottom:17%;
+    transform:translateX(-50%);
+    text-align:center; width:min(88vw, 860px);
+  }
+  h1 {
+    font-size: clamp(46px, 8vw, 96px);
+    font-weight:400;
+    font-family: "Segoe UI Historic", "Segoe UI Symbol", serif;
+    letter-spacing:.42em;
+    text-indent:.42em;
+    color:#eaf6ff;
+    text-shadow: 0 0 34px rgba(150,210,240,.45);
+    animation: fade 2.4s ease both;
+  }
+  .line {
+    margin-top:30px;
+    font-family: "Segoe UI Historic", "Segoe UI Symbol", "Songti SC", serif;
+    font-size: clamp(18px, 2.1vw, 26px);
+    letter-spacing:.5em; text-indent:.5em;
+    color: rgba(214,238,250,.85);
+    animation: fade 2.4s .9s ease both;
+  }
+  .meta {
+    margin-top:52px;
+    font-family: "Segoe UI Historic", "Segoe UI Symbol", "Songti SC", serif;
+    font-size: 12px; letter-spacing:.42em; text-indent:.42em;
+    color: rgba(178,212,232,.6);
+    animation: fade 2.4s 1.6s ease both;
+  }
+  @keyframes fade { from { opacity:0; transform: translateY(14px) } to { opacity:1; transform:none } }
+</style>
+</head>
+<body>
+  <div class="moon"></div>
+  <div class="rays"></div>
+  <div class="stars" id="stars"></div>
+  <div class="shimmer"></div>
+  <div class="glow"></div>
+  <div class="bubbles" id="bubbles"></div>
+
+  <div class="sea">
+    <div class="whale-wrap">
+      <svg class="whale" width="380" height="190" viewBox="-150 -75 300 150">
+        <defs>
+          <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stop-color="#4f9bcc"/>
+            <stop offset="55%" stop-color="#2a6a95"/>
+            <stop offset="100%" stop-color="#12344c"/>
+          </linearGradient>
+          <linearGradient id="belly" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#cfe7f5" stop-opacity=".0"/>
+            <stop offset="100%" stop-color="#dcefFb" stop-opacity=".6"/>
+          </linearGradient>
+        </defs>
+
+        <g class="fluke">
+          <path d="M80,-4 C100,-30 132,-36 148,-26 C132,-18 124,-8 122,2 C124,12 132,26 148,36 C130,46 98,34 82,8 Z"
+                fill="#1d4c70"/>
+        </g>
+
+        <path d="M-118,4 C-112,-40 -58,-62 -2,-56 C54,-50 86,-24 90,4 C86,32 52,52 -2,56 C-58,60 -112,40 -118,4 Z"
+              fill="url(#body)"/>
+        <path d="M-112,10 C-70,44 30,52 88,10 C70,44 20,58 -20,56 C-60,54 -92,36 -112,10 Z"
+              fill="url(#belly)"/>
+
+        <!-- 背鳍 -->
+        <path d="M-16,-54 C-8,-70 8,-74 18,-66 C6,-62 -2,-58 -8,-50 Z" fill="#1a4362"/>
+        <!-- 胸鳍 -->
+        <path d="M-6,44 C6,76 34,92 56,90 C40,74 32,58 28,44 Z" fill="#1a4362"/>
+
+        <!-- 眼 -->
+        <circle cx="-84" cy="-6" r="4.6" fill="#061520"/>
+        <circle cx="-85.6" cy="-8" r="1.5" fill="#eaf6ff" opacity=".85"/>
+        <!-- 喷气 -->
+        <g opacity=".55">
+          <circle cx="-46" cy="-62" r="3" fill="#dff1fb"/>
+          <circle cx="-38" cy="-76" r="4.4" fill="#dff1fb" opacity=".8"/>
+          <circle cx="-52" cy="-84" r="3.2" fill="#dff1fb" opacity=".6"/>
+          <circle cx="-30" cy="-92" r="2.6" fill="#dff1fb" opacity=".5"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="whale-wrap small">
+      <svg class="whale" width="170" height="85" viewBox="-150 -75 300 150">
+        <path d="M80,-4 C100,-30 132,-36 148,-26 C132,-18 124,-8 122,2 C124,12 132,26 148,36 C130,46 98,34 82,8 Z"
+              fill="#1d4c70"/>
+        <path d="M-118,4 C-112,-40 -58,-62 -2,-56 C54,-50 86,-24 90,4 C86,32 52,52 -2,56 C-58,60 -112,40 -118,4 Z"
+              fill="url(#body)"/>
+        <path d="M-112,10 C-70,44 30,52 88,10 C70,44 20,58 -20,56 C-60,54 -92,36 -112,10 Z"
+              fill="url(#belly)"/>
+        <path d="M-16,-54 C-8,-70 8,-74 18,-66 C6,-62 -2,-58 -8,-50 Z" fill="#1a4362"/>
+        <path d="M-6,44 C6,76 34,92 56,90 C40,74 32,58 28,44 Z" fill="#1a4362"/>
+        <circle cx="-84" cy="-6" r="4.6" fill="#061520"/>
+        <circle cx="-85.6" cy="-8" r="1.5" fill="#eaf6ff" opacity=".85"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="words">
+    <h1>ᚺᚢᛁ · ᚨᚾ</h1>
+    <div class="line">ᚹᛟ　ᛗᛖᚾ　ᛞᛟᛜ</div>
+    <div class="meta">ᛞᚨᛃ 5　·　2026.10.26</div>
+  </div>
+
+<script>
+  const sky = document.getElementById('stars');
+  for (let i = 0; i < 70; i++) {
+    const s = document.createElement('div');
+    s.className = 's';
+    const size = 1 + Math.random() * 2.2;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.left = (Math.random() * 100) + '%';
+    s.style.top = (Math.random() * 52) + '%';
+    s.style.animationDuration = (3 + Math.random() * 5).toFixed(1) + 's';
+    s.style.animationDelay = (-Math.random() * 8).toFixed(1) + 's';
+    sky.appendChild(s);
+  }
+
+  const box = document.getElementById('bubbles');
+  for (let i = 0; i < 26; i++) {
+    const b = document.createElement('div');
+    const size = 4 + Math.random() * 14;
+    b.className = 'b';
+    b.style.width = size + 'px';
+    b.style.height = size + 'px';
+    b.style.left = (Math.random() * 100) + '%';
+    b.style.animationDuration = (11 + Math.random() * 16) + 's';
+    b.style.animationDelay = (-Math.random() * 26) + 's';
+    box.appendChild(b);
+  }
+</script>
+</body>
+</html>
