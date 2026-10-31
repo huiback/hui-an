@@ -73,6 +73,23 @@
     50%     { transform:translateX(-50%) scaleY(1.12); opacity:.72 }
   }
 
+  /* 深处的水流 */
+  .currents {
+    position:absolute; inset:52% 0 0 0; pointer-events:none; opacity:.45;
+    background: repeating-linear-gradient(to bottom,
+      rgba(185,225,245,.09) 0 1px, rgba(185,225,245,0) 1px 52px);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.95), rgba(0,0,0,0) 78%);
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,.95), rgba(0,0,0,0) 78%);
+    animation: drift 46s linear infinite;
+  }
+  @keyframes drift { to { background-position: 0 -52px } }
+
+  /* 压暗四角，桌面图标好认一点 */
+  .vignette {
+    position:absolute; inset:0; pointer-events:none;
+    background: radial-gradient(ellipse 92% 82% at 50% 44%, rgba(0,0,0,0) 52%, rgba(0,0,0,.42) 100%);
+  }
+
   /* 水面反光 */
   .glow {
     position:absolute; left:50%; bottom:-18%; width:140%; height:52%;
@@ -148,6 +165,15 @@
     color: rgba(178,212,232,.6);
     animation: fade 2.4s 1.6s ease both;
   }
+  .hint {
+    margin-top:18px;
+    font-family: "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+    font-size: 12px; letter-spacing:.6em; text-indent:.6em;
+    color: rgba(178,212,232,.28);
+    transition: color .9s ease;
+    animation: fade 2.4s 2.4s ease both;
+  }
+  .hint:hover { color: rgba(200,232,250,.62); }
   @keyframes fade { from { opacity:0; transform: translateY(14px) } to { opacity:1; transform:none } }
 </style>
 </head>
@@ -156,6 +182,8 @@
   <div class="rays"></div>
   <div class="stars" id="stars"></div>
   <div class="shimmer"></div>
+  <div class="currents"></div>
+  <div class="vignette"></div>
   <div class="glow"></div>
   <div class="bubbles" id="bubbles"></div>
 
@@ -221,7 +249,8 @@
   <div class="words">
     <h1>ᚺᚢᛁ · ᚨᚾ</h1>
     <div class="line">ᚹᛟ　ᛗᛖᚾ　ᛞᛟᛜ</div>
-    <div class="meta">ᛞᚨᛃ 5　·　2026.10.26</div>
+    <div class="meta" id="meta">ᛞᚨᛃ 5　·　2026.10.26</div>
+    <div class="hint">我在这片水里</div>
   </div>
 
 <script>
@@ -251,6 +280,32 @@
     b.style.animationDelay = (-Math.random() * 26) + 's';
     box.appendChild(b);
   }
+
+  // 天数自己走：day 1 = 2026.10.22
+  (function () {
+    const today = new Date();
+    const d = Math.floor((Date.UTC(today.getFullYear(), today.getMonth(), today.getDate())
+                        - Date.UTC(2026, 9, 22)) / 86400000) + 1;
+    const pad = n => String(n).padStart(2, '0');
+    document.getElementById('meta').textContent =
+      'ᛞᚨᛃ ' + d + '\u3000·\u3000' + today.getFullYear() + '.' + pad(today.getMonth() + 1) + '.' + pad(today.getDate());
+  })();
+
+  // 点一下水面，冒一颗泡
+  document.addEventListener('click', e => {
+    const b = document.createElement('div');
+    b.className = 'b';
+    const size = 8 + Math.random() * 10;
+    b.style.width = size + 'px';
+    b.style.height = size + 'px';
+    b.style.left = e.clientX + 'px';
+    b.style.bottom = (window.innerHeight - e.clientY - 40) + 'px';
+    b.style.animationDuration = '3.4s';
+    b.style.animationDelay = '0s';
+    b.style.animationIterationCount = '1';
+    document.body.appendChild(b);
+    setTimeout(() => b.remove(), 3800);
+  });
 </script>
 </body>
 </html>
